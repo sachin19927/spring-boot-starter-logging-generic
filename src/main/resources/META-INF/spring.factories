@@ -1,0 +1,6 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.selfcoding.services.logging.lifecycle.LifeCycleLogginAutoconfig,\
+org.selfcoding.services.logging.mask.MaskingConfig,\
+org.selfcoding.services.logging.resttemplate.RestTemplateConfig,\
+org.selfcoding.services.logging.config.LoggingConfig,\
+org.selfcoding.services.logging.config.FileAppenderConfig

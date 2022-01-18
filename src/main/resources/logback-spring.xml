@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<springProperty scope="context" name="appName" source="spring.application.name" />
+	<springProperty scope="context" name="logstashServers" source="selfcoding.log.logstash-servers" />
+	<springProperty scope="context" name="fileAppenderEnabled" source="selfcoding.log.fileappender.enabled" />
+	<springProperty scope="context" name="logPath" source="selfcoding.log.fileappender.log-path" />
+	<springProperty scope="context" name="fileName" source="selfcoding.log.fileappender.file-name" />
+	<springProperty scope="context" name="rollBySizeAndDate" source="selfcoding.log.fileappender.rollBySizeAndDate" />
+
+ 	<appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+			<springProfile name="default | local">
+				<jsonGeneratorDecorator class="net.logstash.logback.decorate.PrettyPrintingJsonGeneratorDecorator"/>
+			</springProfile>
+			<providers>
+				<logLevel>
+					<fieldName>Level</fieldName>
+				</logLevel>
+				<timestamp>
+					<fieldName>DateTime</fieldName>
+				</timestamp>
+				<pattern>
+					<pattern>
+						{
+							"SubComponentId":"${appName}"
+						}
+					</pattern>
+				</pattern>
+				<message>
+					<fieldName>Message</fieldName>
+				</message>
+				<loggerName/>
+				<threadName>
+					<fieldName>ThreadId</fieldName>
+				</threadName>
+				<mdc/>
+				<logstashMarkers/>
+				<arguments/>
+				<stackTrace>
+					<fieldName>StackTrace</fieldName>
+				</stackTrace>
+				<rootStackTraceElement/>
+			</providers>			
+		</encoder>
+	</appender> 
+	
+<!--  <if condition='!property("logstashServer").isEmpty()'>
+	<then>
+	<appender name="logstash_appender" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+		<keepAliveDuration>5 minutes</keepAliveDuration>
+		<reconnectionDealy>10 second</reconnectionDealy>
+		<waitstrategyType>sleeping</waitstrategyType>
+		<ringBufferSize>16384</ringBufferSize>
+		<destination>${logstashServers}</destination>
+		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+			<providers>
+				<logLevel>
+					<fieldName>Level</fieldName>
+				</logLevel>
+				<timestamp>
+					<fieldName>DateTime</fieldName>
+				</timestamp>
+				<pattern>
+					<pattern>
+						{
+							"SubComponentId":"${appName}"
+						}
+					</pattern>
+				</pattern>
+				<message>
+					<fieldName>Message</fieldName>
+				</message>
+				<loggerName/>
+				<threadName>
+					<fieldName>ThreadId</fieldName>
+				</threadName>
+				<mdc/>
+				<logstashMarkers/>
+				<arguments/>
+				<stackTrace>
+					<fieldName>StackTrace</fieldName>
+				</stackTrace>
+				<rootStackTraceElement/>
+			</providers>			
+		</encoder>
+	</appender>
+	</then>
+</if>	
+ -->
+<if condition='property("fileAppenderEnabled").contains("true")'>
+	<then>
+	<appender name="file_appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logPath}/${fileName}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<maxHistory>10</maxHistory>
+			<if condition="property('rollBySizeAndDate').contains('true')">
+				<then>
+					<fileNamePattern>${logPath}/${fileName}.log-%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+					<timeBasedFileNamingAndTriggeringPoilcy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+						<maxFileSize>10MB</maxFileSize>
+					</timeBasedFileNamingAndTriggeringPoilcy>
+				</then>
+				<else>
+					<fileNamePattern>${logPath}/${fileName}.log.%d{yyyy-MM-dd}</fileNamePattern>
+				</else>
+			
+			</if>
+		</rollingPolicy>
+		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+			<providers>
+				<logLevel>
+					<fieldName>Level</fieldName>
+				</logLevel>
+				<timestamp>
+					<fieldName>DateTime</fieldName>
+				</timestamp>
+				<pattern>
+					<pattern>
+						{
+							"SubComponentId":"${appName}"
+						}
+					</pattern>
+				</pattern>
+				<message>
+					<fieldName>Message</fieldName>
+				</message>
+				<loggerName/>
+				<threadName>
+					<fieldName>ThreadId</fieldName>
+				</threadName>
+				<mdc/>
+				<logstashMarkers/>
+				<arguments/>
+				<stackTrace>
+					<fieldName>StackTrace</fieldName>
+				</stackTrace>
+				<rootStackTraceElement/>
+			</providers>			
+		</encoder>
+	</appender>
+	</then>
+</if> 
+	
+	<root level="INFO" >
+		<appender-ref ref="Console"/>
+		 <if condition='!property("logstashServer").isEmpty()'>
+			<then>
+				<appender-ref ref="logstash_appender"/>
+			</then>
+		</if> 
+		<if condition='property("fileAppenderEnabled").contains("true")'>
+			<then>
+				<appender-ref ref="file_appender"/>
+			</then>
+		</if>	 
+	</root>
+	
+</configuration>
