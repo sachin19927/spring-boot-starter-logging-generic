@@ -8,14 +8,31 @@
 		<version>2.6.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>org.selfcoding.services</groupId>
+	<groupId>io.github.sachin19927</groupId>
 	<artifactId>spring-boot-starter-logging-generic</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring-boot-starter-logging-generic</name>
+	<url>https://github.com/sachin19927/spring-boot-starter-logging-generic</url>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
+	
+	 <developers>
+    <developer>
+      <name>SACHIN HS</name>
+      <email>sachin19927@gmail.com</email>
+      <organization>org.selfcoding.services</organization>
+      <organizationUrl>https://github.com/sachin19927</organizationUrl>
+    </developer>
+  </developers>
+  
+<scm>
+  <connection>scm:git:git://github.com/sachin19927/spring-boot-starter-logging-generic.git</connection>
+  <developerConnection>scm:git:ssh://github.com:sachin19927/spring-boot-starter-logging-generic.git</developerConnection>
+  <url>https://github.com/sachin19927/spring-boot-starter-logging-generic</url>
+</scm>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
