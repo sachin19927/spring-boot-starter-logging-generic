@@ -9,10 +9,11 @@
 	</parent>
 	<groupId>io.github.sachin19927</groupId>
 	<artifactId>spring-boot-starter-logging-generic</artifactId>
-	<version>1.0.0-RELEASE</version>
+	<version>1.0.2-RELEASE</version>
 	<name>spring-boot-starter-logging-generic</name>
 	<url>https://github.com/sachin19927/spring-boot-starter-logging-generic</url>
 	<description>Demo project for Spring Boot</description>
+	<packaging>jar</packaging>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -25,6 +26,60 @@
       <organizationUrl>https://github.com/sachin19927</organizationUrl>
     </developer>
   </developers>
+  
+  
+  <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+				<plugin>
+				<groupId>org.jacoco</groupId>
+			<artifactId>jacoco-maven-plugin</artifactId>
+			<version>0.8.6</version>
+			<executions>
+				<execution>
+				<id>prepare-agent</id>
+				<goals>
+					<goal>prepare-agent</goal>
+				</goals>
+				</execution>
+				<execution>
+				<id>report</id>
+				<phase>test</phase>
+				<goals>
+					<goal>report</goal>
+				</goals>
+				</execution>
+			</executions>
+			</plugin>
+			
+					<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-javadoc-plugin</artifactId>
+    <configuration>
+        <source>8</source>
+    </configuration>
+</plugin>  
+			
+        </plugins>
+    </build>
   
   
   <distributionManagement>
@@ -88,66 +143,11 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-		
-		<plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-javadoc-plugin</artifactId>
-    <configuration>
-        <source>8</source>
-    </configuration>
-</plugin>
-
-		
-		<plugin>
-      <groupId>org.sonatype.plugins</groupId>
-      <artifactId>nexus-staging-maven-plugin</artifactId>
-      <version>1.6.7</version>
-      <extensions>true</extensions>
-      <configuration>
-        <serverId>ossrh</serverId>
-        <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-        <autoReleaseAfterClose>true</autoReleaseAfterClose>
-      </configuration>
-    </plugin>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-			<artifactId>jacoco-maven-plugin</artifactId>
-			<version>0.8.6</version>
-			<executions>
-				<execution>
-				<id>prepare-agent</id>
-				<goals>
-					<goal>prepare-agent</goal>
-				</goals>
-				</execution>
-				<execution>
-				<id>report</id>
-				<phase>test</phase>
-				<goals>
-					<goal>report</goal>
-				</goals>
-				</execution>
-			</executions>
-			</plugin>
-			
-
-		</plugins>
-	</build>
 	
 	
-	
-    <profiles>
+<profiles>
         <profile>
-            <id>release-sign-artifacts</id>
-            <activation>
-                <property>
-                    <name>performRelease</name>
-                    <value>true</value>
-                </property>
-            </activation>
+            <id>release</id>
             <build>
                 <plugins>
                     <plugin>
@@ -176,27 +176,30 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.6</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-								<configuration>
-            <keyname>${gpg.keyname}</keyname>
-            <passphraseServerId>${gpg.keyname}</passphraseServerId>
-          </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
+                 <!--     <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+						<configuration>
+                <gpgArguments>
+                    <arg>pinentry-mode</arg>
+                    <arg>loopback</arg>
+                </gpgArguments>
+            </configuration>
+                    </execution>
+                </executions>
+            </plugin> -->
                 </plugins>
             </build>
         </profile>
     </profiles>
+
 	
 </project>
