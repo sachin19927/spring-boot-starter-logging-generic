@@ -1,11 +1,2 @@
 # Auto detect text files and perform LF normalization
 * text=auto
-
-[user]
-    name = sachin19927
-    email = sachin19927@gmail.com
-    signingkey = BB08D4CDFBA916DD
-[commit]
-    gpgsign = true
-[gpg]
-    program = C:/Users/User.SYSTEM-92/AppData/Local/gnupg/bin/gpg.exe
